@@ -1,0 +1,5 @@
+@model ListInput
+@{ ViewData["Title"] = "Rename list"; }
+<h1>Rename list</h1>
+<form asp-action="EditList" asp-route-id="@ViewBag.ListId" method="post"><div asp-validation-summary="ModelOnly" class="text-danger"></div><div class="mb-3"><label asp-for="Name" class="form-label"></label><input asp-for="Name" class="form-control" /><span asp-validation-for="Name" class="text-danger"></span></div><button class="btn btn-primary">Save</button> <a asp-action="List" asp-route-id="@ViewBag.ListId" class="btn btn-outline-secondary">Cancel</a></form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

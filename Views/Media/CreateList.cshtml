@@ -1,0 +1,5 @@
+@model ListInput
+@{ ViewData["Title"] = "Create list"; }
+<h1>Create a list</h1>
+<form asp-action="CreateList" method="post"><div asp-validation-summary="ModelOnly" class="text-danger"></div><div class="mb-3"><label asp-for="Name" class="form-label"></label><input asp-for="Name" class="form-control" placeholder="e.g. Favorite games" /><span asp-validation-for="Name" class="text-danger"></span></div><button class="btn btn-primary">Create list</button> <a asp-action="Mine" class="btn btn-outline-secondary">Cancel</a></form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

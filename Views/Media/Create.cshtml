@@ -1,0 +1,5 @@
+@model MediaEntryInput
+@{ ViewData["Title"] = "Add media"; }
+<h1>Add media</h1>
+<form asp-action="Create" asp-route-listId="@ViewBag.ListId" method="post"><partial name="_EntryForm" model="Model" /></form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

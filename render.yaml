@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: medialist
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+        value: "true"
+      - key: SeedDemoData
+        value: "true"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: medialist-db
+          property: connectionString
+
+databases:
+  - name: medialist-db
+    plan: 0.1c-256mb
+    databaseName: medialist
+    user: medialist

@@ -1,0 +1,15 @@
+.vs/
+bin/
+obj/
+*.user
+*.suo
+.env
+.env.*
+appsettings.Production.json
+appsettings.Development.json
+**/secrets.json
+*.db
+*.mdf
+*.ldf
+Properties/serviceDependencies.local.json
+Properties/serviceDependencies.local.json.user

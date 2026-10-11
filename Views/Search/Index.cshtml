@@ -1,0 +1,16 @@
+@model SearchResults
+@{ ViewData["Title"] = "Search"; }
+<h1>Search</h1>
+<form method="get" class="d-flex gap-2 mb-4"><input name="q" value="@Model.Query" class="form-control" aria-label="Search media and users" placeholder="Search media or users" /><button class="btn btn-primary">Search</button></form>
+@if (!string.IsNullOrWhiteSpace(Model.Query))
+{
+    <h2>Users</h2>
+    @if (Model.Users.Count == 0) { <p>No public users found.</p> }
+    <ul>@foreach (var user in Model.Users) { <li><a asp-controller="Media" asp-action="UserList" asp-route-id="@user.Id">@user.DisplayName</a></li> }</ul>
+    <h2>Lists</h2>
+    @if (Model.Lists.Count == 0) { <p>No public lists found.</p> }
+    <ul>@foreach (var list in Model.Lists) { <li><a asp-controller="Media" asp-action="List" asp-route-id="@list.Id">@list.Name</a></li> }</ul>
+    <h2>Media on public lists</h2>
+    @if (Model.Media.Count == 0) { <p>No media found.</p> }
+    <ul>@foreach (var entry in Model.Media) { <li><a asp-controller="Media" asp-action="List" asp-route-id="@entry.ListId">@entry.Title</a> · @entry.MediaType · @entry.Rating/10 · @entry.List.Name</li> }</ul>
+}

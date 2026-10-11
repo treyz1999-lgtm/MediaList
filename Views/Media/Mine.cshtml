@@ -1,0 +1,14 @@
+@model IEnumerable<MediaList>
+@{ ViewData["Title"] = "My lists"; }
+<div class="d-flex justify-content-between align-items-center mb-3"><h1>My lists</h1><a asp-action="CreateList" class="btn btn-primary">Create list</a></div>
+@if (!Model.Any()) { <p>Create a list first, then add media to it.</p> }
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+@foreach (var list in Model)
+{
+    <div class="col"><div class="card h-100"><div class="card-body">
+        <h2 class="h5"><a asp-action="List" asp-route-id="@list.Id">@list.Name</a></h2>
+        <p class="text-muted mb-2">@list.Entries.Count item(s) · @(list.IsPublic ? "Public" : "Private")</p>
+        <a asp-action="List" asp-route-id="@list.Id" class="btn btn-sm btn-outline-primary">Open list</a>
+    </div></div></div>
+}
+</div>

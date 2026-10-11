@@ -1,0 +1,13 @@
+@model MediaList
+@{ ViewData["Title"] = Model.Name; ViewData["Editable"] = (bool)ViewBag.IsOwner; }
+<div class="d-flex justify-content-between align-items-center mb-2"><div><h1>@Model.Name</h1><p class="text-muted">By @ViewBag.OwnerName · @(Model.IsPublic ? "Public" : "Private")</p></div>
+@if ((bool)ViewBag.IsOwner) { <a asp-action="Create" asp-route-listId="@Model.Id" class="btn btn-primary">Add media</a> }
+</div>
+@if ((bool)ViewBag.IsOwner)
+{
+    <div class="d-flex gap-2 mb-4">
+        <a asp-action="EditList" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary">Rename list</a>
+        <form asp-action="ToggleVisibility" asp-route-id="@Model.Id" method="post"><button type="submit" class="btn btn-sm btn-outline-secondary">Make @(Model.IsPublic ? "private" : "public")</button></form>
+    </div>
+}
+<partial name="_EntryCards" model="Model.Entries.OrderByDescending(e => e.Rating).ThenBy(e => e.Title)" view-data="ViewData" />

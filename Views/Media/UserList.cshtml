@@ -1,0 +1,12 @@
+@model IEnumerable<MediaList>
+@{ ViewData["Title"] = $"{ViewBag.OwnerName}'s lists"; }
+<h1>@ViewBag.OwnerName's lists</h1>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+@foreach (var list in Model)
+{
+    <div class="col"><div class="card h-100"><div class="card-body">
+        <h2 class="h5"><a asp-action="List" asp-route-id="@list.Id">@list.Name</a></h2>
+        <p class="text-muted">@list.Entries.Count item(s) · @(list.IsPublic ? "Public" : "Private")</p>
+    </div></div></div>
+}
+</div>

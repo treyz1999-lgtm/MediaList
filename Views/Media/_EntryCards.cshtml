@@ -1,0 +1,13 @@
+@model IEnumerable<MediaEntry>
+@{ var editable = (bool)(ViewData["Editable"] ?? false); }
+@if (!Model.Any()) { <p class="text-muted">No media added yet.</p> }
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+@foreach (var entry in Model)
+{
+    <div class="col"><div class="card h-100">
+        @if (!string.IsNullOrWhiteSpace(entry.CoverImageUrl)) { <img src="@entry.CoverImageUrl" class="card-img-top media-cover" alt="Cover for @entry.Title" /> }
+        <div class="card-body"><h2 class="h5 card-title">@entry.Title</h2><p class="card-text">@entry.MediaType @if (!string.IsNullOrWhiteSpace(entry.Genre)) { <span>· @entry.Genre</span> }</p><strong>@entry.Rating/10</strong></div>
+        @if (editable) { <div class="card-footer d-flex gap-2"><a asp-controller="Media" asp-action="Edit" asp-route-id="@entry.Id" class="btn btn-sm btn-outline-primary">Edit</a><form asp-controller="Media" asp-action="Delete" asp-route-id="@entry.Id" method="post" onsubmit="return confirm('Delete this entry?');"><button class="btn btn-sm btn-outline-danger" type="submit">Delete</button></form></div> }
+    </div></div>
+}
+</div>
