@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MediaWebApp.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace MediaWebApp.Data
 {
@@ -14,6 +15,13 @@ namespace MediaWebApp.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            if (Database.IsNpgsql())
+            {
+                builder.Entity<IdentityUserLogin<string>>().Property(x => x.LoginProvider).HasMaxLength(128);
+                builder.Entity<IdentityUserLogin<string>>().Property(x => x.ProviderKey).HasMaxLength(128);
+                builder.Entity<IdentityUserToken<string>>().Property(x => x.LoginProvider).HasMaxLength(128);
+                builder.Entity<IdentityUserToken<string>>().Property(x => x.Name).HasMaxLength(128);
+            }
             builder.Entity<MediaEntry>().HasIndex(e => e.OwnerId);
             builder.Entity<MediaEntry>().HasOne(e => e.List).WithMany(l => l.Entries)
                 .HasForeignKey(e => e.ListId).OnDelete(DeleteBehavior.NoAction);
