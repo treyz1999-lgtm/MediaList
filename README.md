@@ -2,6 +2,10 @@
 
 An ASP.NET Core MVC app for organizing favorite media into named lists. Users can register, set a public display name, rate entries, and choose whether each list is public or private. Visitors can search media, lists, and users that have public lists.
 
+**Live site:** https://medialist-v8q7.onrender.com/
+
+**Source:** https://github.com/treyz1999-lgtm/MediaList
+
 ## Features
 
 - Create and rename lists, then add, edit, and delete anime, movies, TV shows, comics, books, games, music, or other media inside them.
@@ -19,20 +23,27 @@ An ASP.NET Core MVC app for organizing favorite media into named lists. Users ca
 
 The app uses ASP.NET Core Identity for password storage and sign-in, Entity Framework Core for persistence, SQL Server LocalDB for development, and Bootstrap for the interface.
 
+## How it works
+
+- ASP.NET Core MVC serves the pages and handles list, media, profile, and search requests.
+- ASP.NET Core Identity stores accounts and handles cookie-based sign-in. A separate profile holds the public display name.
+- Each media entry belongs to a named list and an owner. List visibility controls which lists, entries, and users appear in public search and public pages.
+- EF Core uses SQL Server LocalDB on the developer machine and PostgreSQL on Render. Each provider has its own migrations.
+
 ## Demo content
 
 Run `dotnet run -- --seed-demo` once to add three public sample accounts (`test1`, `test2`, and `test3`) with lists of movies, shows, books, comics, games, and anime. Repeating the command skips accounts that already exist. Their passwords are randomly generated, so these accounts are for browsing, not signing in. The demo entries are examples of personal lists, not a catalog or licensed cover images.
 
-## Deploy on Render
+## Hosting
 
-The included `Dockerfile` and `render.yaml` define a free Render web service and a **separate paid PostgreSQL database**. The database uses Render's `0.1c-256mb` plan; review current Render pricing before applying the Blueprint. The `DATABASE_URL` environment variable is connected to that database automatically. On startup, the app applies the PostgreSQL migrations and creates the demo content if it is missing. The `/health` endpoint is used for Render health checks.
+The live site runs as a Docker web service on Render with a separate Render PostgreSQL database. The included `Dockerfile` and `render.yaml` define the same setup: a free web service and a paid `0.1c-256mb` PostgreSQL plan. Review Render's current pricing before creating another Blueprint. Render supplies `DATABASE_URL` from the database to the web service. On startup, the app applies the PostgreSQL migrations and adds demo content if it is missing. Render checks `/health`.
 
 1. Push the repository to GitHub.
 2. In Render, create a new Blueprint from that repository and review its plan and cost before applying it.
-3. After deployment, open the service's `onrender.com` URL. The first startup may take longer while migrations and demo content are created.
+3. After deployment, open the service's `onrender.com` URL. The first startup may take longer while migrations and demo content are created. The free web service may also take time to wake after inactivity.
 
 Local development continues to use SQL Server LocalDB when `DATABASE_URL` is absent. To use a local PostgreSQL database, set `DATABASE_URL` to its URL and run the app. Keep connection strings and production settings out of Git.
 
 ## Notes
 
-Cover images currently use URLs; file uploads are not implemented. Search returns up to 50 matching public media entries, lists, and users per category. A migration moves existing media into a named list and preserves the former single-list table as `LegacyMediaLists` for rollback. The earlier joke table also remains so existing data is preserved, but the joke feature is no longer linked or routed in the app.
+Cover images currently use URLs; file uploads are not implemented. Search returns up to 50 matching public media entries, lists, and users per category. Demo accounts have random unknown passwords and cannot be used for sign-in. The site has no email delivery or account confirmation workflow. A migration moves existing local media into a named list and preserves the former single-list table as `LegacyMediaLists` for rollback. The earlier joke table also remains in the local database so existing data is preserved, but the joke feature is no longer linked or routed in the app. LocalDB data is separate from the hosted PostgreSQL database.
